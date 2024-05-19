@@ -1,0 +1,35 @@
+# one way to think of data overhere is to think of it
+# in terms of data in JSON
+
+# key-value
+1 : "kuch bii"
+"arey" : "chal naa"
+
+# Strings can be enclosed in single quotes (' ') or double quotes (" ").
+# Quoting strings is useful for preserving leading/trailing whitespace or special characters.
+---
+# list
+- apple
+- Apple
+- orange
+
+# yml is case sensitive so - apple and - Apple are different items
+---
+# BLOCK style
+cities:
+ - new delhi
+ - gujarat
+ - mumbai
+---
+# to not rely on indentation, use flow type
+cities: [new delhi, gujarat]
+---
+{mango: "yellow fruit", age: 56}
+---
+#nested data structure
+#aka mappings
+parent_key:
+  child_key1: value1
+  child_key2: value2
+
+...

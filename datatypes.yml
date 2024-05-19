@@ -1,0 +1,58 @@
+#scalars
+string: Hello, World!
+myString: "Hy"
+myWhatever: 'Hi'
+integer: 42
+float: 3.14
+boolean: true # boolean can be yes/no as well but not preferred
+bool: No # n, N, false, False, FALSE
+null_value: null
+nullBaby: ~
+
+#Sequence
+list:
+  - item1
+  - item2
+  - item3
+
+# Multi line strings
+
+# Block Scalar Style
+# to preserve line breaks and maintain the original formatting of the text.
+description: |
+  This is a multi-line string
+  using block scalar style.
+  Line breaks are preserved.
+
+# Folded Scalar Style
+# opposite
+description: >
+  This is a multi-line string
+  using folded scalar style.
+  Line breaks are folded into spaces.
+
+# specifying the type explicitily using !!
+#int
+zero: !!int 0
+positiveNum: !!int 45
+negativeNum: !!int -45
+binaryNum: !!int 0b1011
+octalNum: !!int 06574
+hexa: !!int 0x45
+commaValue: !!int +540_000 #540,000
+exponentialNumber: 6.023E56;
+#float
+marks: !!float 56.89
+infinite: !!float .inf
+not a number: .nan
+#boolean
+boole: !!bool No
+#string
+myMsg: !!str "hiii"
+#null and none
+surname: !null Null # or null or ~
+~: This is a null key
+#array representation already covered
+
+#dates and time (google it)
+date: !!timestamp 2002-12-14

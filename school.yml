@@ -1,0 +1,8 @@
+---
+School:
+  - name: DPS
+    principal: Someone
+    Students:
+      - rno: 23
+        name: Saqib
+        marks: 90
