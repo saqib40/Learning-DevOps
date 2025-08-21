@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: mongodb-deployment
+  labels:
+    app: mongodb
+
+spec:
+  # kitnay pods bananey hai
+  replicas: 1
+  # kin pods ko manage karna hai
+  selector:
+    matchLabels:
+      app: mongodb
+  # pods kaisey baney chahiye
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      # refer to the official doc of mongo image on docker-hub
+      containers:
+        - name: mongodb-container
+          image: mongo
+          ports:
+            - containerPort: 27017
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: mongo-root-username
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom: 
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: mongo-root-password
