@@ -6,11 +6,12 @@ metadata:
   name: mongo-express-service
 
 spec:
-  type: LoadBalancer # Gives an external IP and exposes it to outside requests
+  #type: LoadBalancer # Gives an external IP and exposes it to outside requests
+  type: ClusterIP
   selector:
     app: mongo-express
   ports:
     - protocol: TCP
       port: 8081
       targetPort: 8081
-      nodePort: 30000 # Port for external IP address
+      # nodePort: 30000 # Port for external IP address
