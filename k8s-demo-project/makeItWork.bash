@@ -3,6 +3,7 @@
 
 # Let's create the mongo deployment
 kubectl apply -f credentials/mongo-secret.yaml
+kubectl apply -f pvc/mongodb-pvc.yaml
 kubectl apply -f deployments/mongo-deployment.yaml
 # Then create the mongo service
 kubectl apply -f services/mongo-service.yaml
