@@ -1,1 +1,1 @@
-Refere to [makeItWork](./makeItWork.bash)
+### Refer to [makeItWork](./makeItWork.bash)

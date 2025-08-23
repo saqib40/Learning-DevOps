@@ -13,53 +13,58 @@ kubectl apply -f deployments/mongo-express-deployment.yaml
 # Then create the mongo-express service
 kubectl apply -f services/mongo-express-service.yaml
 
-# to set the external IP for our service in minikube 
-# minikube service mongo-express-service (if we make the mongo-express service as LoadBalancer aka external service)
-# Basic Credentials in UI=> username = admin and Password = pass
-
-## Bringing in Ingress
+# Bringing in Ingress
 kubectl apply -f ingress.yaml
 
-## Accessing the application : (I am using WSL)
 
-# Method 1: (using Port Forward, will work surely even if you have )
+# --- HOW TO ACCESS THE APPLICATION ---
+# Choose either Method 1 or Method 2
 
-# 1. Find the Ingress controller pod name.
-#    Run: 
-kubectl get pods -n ingress-nginx
-#    (Copy the name of the pod starting with 'ingress-nginx-controller-...')
+# Method 1: (using Port Forward)
+# 1. Find the Ingress controller pod name:
+#    kubectl get pods -n ingress-nginx
+# 2. Open a NEW terminal and run (replace <pod-name>):
+#    kubectl port-forward --namespace ingress-nginx pod/<pod-name> 8080:80
+# 3. Use the browser to go to http://check-kar.com:8080
+#    (Requires hosts file edit: 127.0.0.1 check-kar.com)
+# 4. If you can't edit your files because you have some secured laptop from company
+#    Run the below command in another terminal, it will spit the html of the page which shows things are working fine
+#    curl --header "Host: check-kar.com" http://127.0.0.1:8080
 
-# 2. Open a NEW, separate terminal and start the port-forward.
-#    You must leave this terminal open.
-Replace <pod-name> with the name from Step 1.
-kubectl port-forward --namespace ingress-nginx pod/<pod-name> 8080:80
-
-# 3. Test with curl from another terminal to print the HTML:
-curl --header "Host: check-kar.com" http://127.0.0.1:8080
-
-# 4. To use a browser, make sure your Windows hosts file has this line: (company firewall may not allow this)
-#    127.0.0.1       check-kar.com
-
-# 5. Open your browser and go to:
-#    http://check-kar.com:8080
-
-# 6. Log in to the UI with these credentials:
-#    Username: admin
-#    Password: pass
-
-# Method 2: (using tunneling, if you have company firewall it might be blocked)
-
-# 1. Open a NEW, separate terminal and run this command.
-#    You must leave this terminal open.
-#
+# Method 2: (using Tunneling)
+# 1. Open a NEW terminal and run (leave it open):
 #    minikube tunnel
+# 2. Use the browser to go to http://check-kar.com
+#    (Requires hosts file edit: 127.0.0.1 check-kar.com)
 
-# 2. Make sure your Windows hosts file has this line:
-#    127.0.0.1       check-kar.com
+# For both methods, log in to the UI with:
+# Username: admin
+# Password: pass
 
-# 3. Open your browser and go to:
-#    http://check-kar.com
 
-# 4. Log in to the UI with these credentials:
-#    Username: admin
-#    Password: pass
+# TO TEST DATA PERSISTENCE :
+
+# 1. Find your MongoDB pod name:
+#    kubectl get pods
+
+# 2. Add data to the database using 'kubectl exec'.
+#    Replace <mongodb-pod-name> with your actual pod name.
+#
+#    kubectl exec <mongodb-pod-name> -- mongosh --username Saqib --password okok --eval 'db.getSiblingDB("testdb").users.insertOne({ name: "Saqib", status: "testing from cli" });'
+
+# 3. Verify the data was added:
+#
+#    kubectl exec <mongodb-pod-name> -- mongosh --username Saqib --password okok --eval 'db.getSiblingDB("testdb").users.find();'
+
+# 4. Simulate a pod restart to test persistence:
+#
+#    kubectl delete pod <mongodb-pod-name>
+
+# 5. Wait for the new pod to be in the 'Running' state, then find its new name:
+#    kubectl get pods
+
+# 6. Check if the data is still there.
+#    Replace <new-mongodb-pod-name> with the new pod's name.
+#    You should see your data, which proves the PVC is working.
+#
+#    kubectl exec <new-mongodb-pod-name> -- mongosh --username Saqib --password okok --eval 'db.getSiblingDB("testdb").users.find();'
