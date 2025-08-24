@@ -1,0 +1,35 @@
+replicaCount: 1
+
+# MongoDB Config
+mongodb:
+  image:
+    repository: mongo
+    tag: "latest"
+  service:
+    name: mongo
+    port: 27017
+  auth:
+    rootUser: "Saqib"
+    rootPassword: "okok"
+  persistence:
+    enabled: true
+    size: 1Gi
+    accessMode: ReadWriteOnce
+
+# Mongo Express Config
+mongoExpress:
+  image:
+    repository: mongo-express
+    tag: "latest"
+  service:
+    type: ClusterIP
+    port: 8081
+  basicAuth:
+    username: "admin"
+    password: "pass"
+
+# Ingress Config
+ingress:
+  enabled: true
+  className: nginx
+  host: check-kar.com
