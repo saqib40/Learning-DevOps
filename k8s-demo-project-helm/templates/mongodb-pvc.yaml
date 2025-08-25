@@ -1,0 +1,23 @@
+{{/*
+This 'if' block makes the entire PVC optional.
+This file will only generate a resource if 'persistence.enabled' is 'true' in values.yaml.
+The {{- ' tells Helm to chomp the whitespace before the if statement.
+*/}}
+{{- if .Values.mongodb.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "my-mongo-app.fullname" . }}-mongodb-pvc
+  labels:
+    {{- include "my-mongo-app.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.mongodb.persistence.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.mongodb.persistence.size }}
+{{/*
+This 'end' closes the 'if' block.
+The '}}' ends the template action.
+*/}}
+{{- end }}

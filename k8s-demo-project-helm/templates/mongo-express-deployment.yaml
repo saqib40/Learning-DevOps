@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "my-mongo-app.fullname" . }}-mongo-express
+  labels:
+    {{- include "my-mongo-app.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.mongoExpress.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "my-mongo-app.fullname" . }}-mongo-express
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "my-mongo-app.fullname" . }}-mongo-express
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: mongo-express
+        image: "{{ .Values.mongoExpress.image.repository }}:{{ .Values.mongoExpress.image.tag }}"
+        ports:
+        - containerPort: {{ .Values.mongoExpress.service.port }}
+        env:
+        # The connection URL is now built completely from values, making it highly configurable.
+        - name: ME_CONFIG_MONGODB_URL
+          value: "mongodb://{{ .Values.mongodb.auth.rootUser }}:{{ .Values.mongodb.auth.rootPassword }}@{{ include "my-mongo-app.fullname" . }}-{{ .Values.mongodb.service.name }}:{{ .Values.mongodb.service.port }}"
+        - name: ME_CONFIG_BASICAUTH_USERNAME
+          value: {{ .Values.mongoExpress.basicAuth.username | quote }}
+        - name: ME_CONFIG_BASICAUTH_PASSWORD
+          value: {{ .Values.mongoExpress.basicAuth.password | quote }}
