@@ -7,3 +7,4 @@
 - CI/CD
     - [Jenkins and problems with scaling it up](https://flannel-pudding-0ec.notion.site/CI-CD-25b1ac7deedc80acab89feeaf61698ea?pvs=74)
     - [CD with GitOps](https://youtube.com/playlist?list=PLdpzxOOAlwvKu7OZpgj1-MzJFqZ8RBp6f&si=qjClOlW_CmmFNju2)
+- [Serverless](https://youtu.be/AgOmeANl3ls?si=05ro-l1xfmist_pc)
